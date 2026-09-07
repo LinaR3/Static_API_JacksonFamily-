@@ -37,12 +37,12 @@ def get_all_members():
 @app.route('/members/<int:member_id>', methods=['GET'])
 def get_one_member(member_id):
     try:
-        member = jackson_family.get_member(id)
+        member = jackson_family.get_member(member_id)
         if member == None:
             return jsonify({"msg": "Miembro no encontrado"}), 404
         return jsonify (member),200
     except Exception as e:
-        return jsonify({"error":str (e)}), 5000
+        return jsonify({"error":str (e)}), 500
 
 #codigo para agregar un miembro:
 @app.route('/members', methods=['POST'])
@@ -50,8 +50,8 @@ def add_new_member():
     try:
         request_body = request.get_json()
         # Con validación básica de campos
-        if not request_body or "first_name" not in request_body or "age" not in request_body or "lucky_numbers" not in request_body:
-            return jsonify({"msg": "Bad request, missing required fields"}), 400
+        if not request_body:
+            return jsonify({"msg": "Cuerpo de la peticion vacio"}), 400
 
         new_member = jackson_family.add_member(request_body)
         return jsonify(new_member), 200
