@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 CORS(app)
 
-# Create the jackson family object
+# JacksonFamily object
 jackson_family = FamilyStructure("Jackson")
 
 @app.errorhandler(APIException)
@@ -24,8 +24,8 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+#llamado de TODOS los miembros con funcion: 
 @app.route('/members', methods=['GET'])
-#llamad de TODOS los miembros con funcion: 
 def get_all_members():
     try:
         members = jackson_family.get_all_members()
@@ -34,6 +34,7 @@ def get_all_members():
         return jsonify({"error": str(e)}), 500
 
 #llamado de miembro pero por ID, individual:
+@app.route('/members/<int:member_id>', methods=['GET'])
 def get_one_member(member_id):
     try:
         member = jackson_family.get_member(id)
@@ -57,6 +58,7 @@ def add_new_member():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+#Eliminar un mimebro:
 @app.route('/members/<int:member_id>', methods=['DELETE'])
 def delete_member(member_id):
     try:
