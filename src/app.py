@@ -16,18 +16,13 @@ CORS(app)
 # Create the jackson family object
 jackson_family = FamilyStructure("Jackson")
 
-
-# Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-
-# Generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
-
 
 @app.route('/members', methods=['GET'])
 def get_one_member(member_id):
